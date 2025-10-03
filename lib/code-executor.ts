@@ -54,40 +54,10 @@ let pyodideInstance: any = null
 export async function executePython(code: string): Promise<ExecutionResult> {
   const startTime = performance.now()
 
-  try {
-    // Load Pyodide if not already loaded
-    if (!pyodideInstance) {
-      // @ts-ignore
-      const { loadPyodide } = await import("https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.mjs")
-      pyodideInstance = await loadPyodide({
-        indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/",
-      })
-    }
-
-    // Capture stdout
-    let output = ""
-    pyodideInstance.setStdout({
-      batched: (text: string) => {
-        output += text + "\n"
-      },
-    })
-
-    // Run the code
-    await pyodideInstance.runPythonAsync(code)
-
-    const executionTime = performance.now() - startTime
-
-    return {
-      output: output || "Code executed successfully (no output)",
-      executionTime,
-    }
-  } catch (error: any) {
-    const executionTime = performance.now() - startTime
-    return {
-      output: "",
-      error: `Python Error: ${error.message}`,
-      executionTime,
-    }
+  return {
+    output: "",
+    error: "Python execution is not available in this environment. Please use JavaScript or TypeScript.",
+    executionTime: performance.now() - startTime,
   }
 }
 
